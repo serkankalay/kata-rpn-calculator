@@ -1,7 +1,7 @@
 import pytest
 
-from rpn_calculator import (Divide, Multiply, Subtract, Sum, parse_expression,
-                            parse_number, parse_operator)
+from rpn_calculator import (Divide, Multiply, Subtract, Sum, calculate,
+                            parse_expression, parse_number, parse_operator)
 
 
 def test_parse_number():
@@ -24,6 +24,10 @@ def test_simple_expression():
     assert exp[0] == 20
     assert exp[1] == 5
     assert isinstance(exp[2], Divide)
+
+
+def test_calculate_simple_expression():
+    assert calculate(parse_expression("20 5 /")) == 4
 
 
 def test_double_expression():
