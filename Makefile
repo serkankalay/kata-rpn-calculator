@@ -9,3 +9,6 @@ format:
 
 freeze:
 	pip freeze > requirements.txt
+
+test:
+	pytest test_rpn_calculator.py
