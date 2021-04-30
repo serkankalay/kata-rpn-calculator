@@ -1,4 +1,7 @@
 from abc import ABC
+from typing import Sequence, Union
+
+Expression = Sequence[Union[float, "Operator"]]
 
 
 def parse_number(s: str) -> float:
@@ -36,3 +39,16 @@ def parse_operator(s: str) -> Operator:
         return Multiply()
     else:
         raise ArithmeticError()
+
+
+def _parse_item(s: str) -> Union[float, Operator]:
+    try:
+        return parse_number(s)
+    except ValueError:
+        return parse_operator(s)
+    except ArithmeticError:
+        print("Unknown data")
+
+
+def parse_expression(s: str) -> Expression:
+    return [_parse_item(s) for s in s.split()]
