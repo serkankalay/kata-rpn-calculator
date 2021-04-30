@@ -70,5 +70,7 @@ def calculate(exp: Expression) -> float:
     operator_predecessor = exp[-2]
     if isinstance(operator_predecessor, float):
         return last_operator.apply(calculate(exp[:-2]), operator_predecessor)
+    elif isinstance(exp[0], float):
+        return last_operator.apply(calculate(exp[1:-1]), exp[0])
 
     raise ArithmeticError()

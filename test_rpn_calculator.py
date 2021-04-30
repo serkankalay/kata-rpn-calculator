@@ -39,6 +39,10 @@ def test_double_expression():
     assert isinstance(exp[4], Subtract)
 
 
+def test_calculate_double_expression():
+    assert calculate(parse_expression("4 2 + 3 -")) == 3
+
+
 def test_triple_expression():
     exp = parse_expression("3 5 8 * 7 + *")
     assert exp[0] == 3
@@ -48,3 +52,7 @@ def test_triple_expression():
     assert exp[4] == 7
     assert isinstance(exp[5], Sum)
     assert isinstance(exp[6], Multiply)
+
+
+def test_calculate_triple_expression():
+    assert calculate(parse_expression("3 5 8 * 7 + *")) == 141
