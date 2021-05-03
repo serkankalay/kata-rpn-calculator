@@ -49,7 +49,12 @@ class SquareRoot(SingleOperator):
         return math.sqrt(n1)
 
 
-class Max(Operator):
+class MultiOperator(Operator):
+    def apply(self, *args) -> float:
+        raise NotImplementedError()
+
+
+class Max(MultiOperator):
     def apply(self, *args) -> float:
         return max(*args)
 
@@ -84,16 +89,26 @@ def parse_expression(s: str) -> Expression:
     return [_parse_item(s) for s in s.split()]
 
 
-def calculate(exp: Expression) -> float:
+def calculate(exp: Expression) -> Union[float, Expression]:
     last_operator = exp[-1]
     if not isinstance(last_operator, Operator):
         if len(exp) == 1:
             return exp[0]
         else:
-            raise ValueError()
+            return exp
 
     if isinstance(last_operator, SingleOperator):
         return last_operator.apply(calculate(exp[:-1]))
+
+    if isinstance(last_operator, MultiOperator):
+        current = -2
+        args = []
+        while len(exp) + current >= 0 and not isinstance(
+            exp[current], Operator
+        ):
+            args.append(exp[current])
+            current -= 1
+        return calculate(list(exp[:current]) + [last_operator.apply(args)])
 
     operator_predecessor = exp[-2]
     if isinstance(operator_predecessor, float):

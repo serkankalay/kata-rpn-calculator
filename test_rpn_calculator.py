@@ -1,8 +1,8 @@
 import pytest
 
-from rpn_calculator import (Divide, Multiply, SquareRoot, Subtract, Sum,
+from rpn_calculator import (Divide, Max, Multiply, SquareRoot, Subtract, Sum,
                             calculate, parse_expression, parse_number,
-                            parse_operator, Max)
+                            parse_operator)
 
 
 def test_parse_number():
@@ -73,5 +73,9 @@ def test_triple_expression_with_square_root():
     assert calculate(parse_expression("20 9 SQRT 5 * +")) == 35
 
 
-# def test_simple_max_expression():
-#     assert calculate(parse_expression("5 3 4 2 9 1 MAX")) == 9
+def test_simple_max_expression():
+    assert calculate(parse_expression("5 3 4 2 9 1 MAX")) == 9
+
+
+# def test_double_max_expression():
+#     assert calculate(parse_expression("4 5 MAX 1 2 MAX *")) == 10
