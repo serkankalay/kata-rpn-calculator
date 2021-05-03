@@ -1,7 +1,8 @@
 import pytest
 
-from rpn_calculator import (Divide, Multiply, Subtract, Sum, calculate,
-                            parse_expression, parse_number, parse_operator)
+from rpn_calculator import (Divide, Multiply, SquareRoot, Subtract, Sum,
+                            calculate, parse_expression, parse_number,
+                            parse_operator)
 
 
 def test_parse_number():
@@ -15,6 +16,7 @@ def test_operator():
     assert isinstance(parse_operator("+"), Sum)
     assert isinstance(parse_operator("-"), Subtract)
     assert isinstance(parse_operator("*"), Multiply)
+    assert isinstance(parse_operator("SQRT"), SquareRoot)
     with pytest.raises(ArithmeticError):
         parse_operator("5")
 
@@ -56,3 +58,15 @@ def test_triple_expression():
 
 def test_calculate_triple_expression():
     assert calculate(parse_expression("3 5 8 * 7 + *")) == 141
+
+
+def test_simple_square_root():
+    assert calculate(parse_expression("9 SQRT")) == 3
+
+
+def test_double_expression_with_square_root():
+    assert calculate(parse_expression("9 SQRT 5 *")) == 15
+
+
+def test_triple_expression_with_square_root():
+    assert calculate(parse_expression("20 9 SQRT 5 * +")) == 35

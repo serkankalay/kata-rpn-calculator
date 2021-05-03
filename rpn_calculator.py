@@ -1,3 +1,4 @@
+import math
 from abc import ABC
 from typing import Sequence, Union
 
@@ -9,7 +10,7 @@ def parse_number(s: str) -> float:
 
 
 class Operator(ABC):
-    def apply(self, n1: float, n2: float) -> float:
+    def apply(self, *args) -> float:
         raise NotImplementedError()
 
 
@@ -33,6 +34,16 @@ class Multiply(Operator):
         return n1 * n2
 
 
+class SingleOperator(Operator):
+    def apply(self, n1: float) -> float:
+        raise NotImplementedError
+
+
+class SquareRoot(SingleOperator):
+    def apply(self, n1: float) -> float:
+        return math.sqrt(n1)
+
+
 def parse_operator(s: str) -> Operator:
     if s == "/":
         return Divide()
@@ -42,6 +53,8 @@ def parse_operator(s: str) -> Operator:
         return Subtract()
     elif s == "*":
         return Multiply()
+    elif s == "SQRT":
+        return SquareRoot()
     else:
         raise ArithmeticError()
 
@@ -66,6 +79,9 @@ def calculate(exp: Expression) -> float:
             return exp[0]
         else:
             raise ValueError()
+
+    if isinstance(last_operator, SingleOperator):
+        return last_operator.apply(calculate(exp[:-1]))
 
     operator_predecessor = exp[-2]
     if isinstance(operator_predecessor, float):
