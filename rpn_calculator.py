@@ -14,22 +14,27 @@ class Operator(ABC):
         raise NotImplementedError()
 
 
-class Divide(Operator):
+class DoubleOperator(Operator):
+    def apply(self, n1: float, n2: float) -> float:
+        raise NotImplementedError()
+
+
+class Divide(DoubleOperator):
     def apply(self, n1: float, n2: float) -> float:
         return n1 / n2
 
 
-class Sum(Operator):
+class Sum(DoubleOperator):
     def apply(self, n1: float, n2: float) -> float:
         return n1 + n2
 
 
-class Subtract(Operator):
+class Subtract(DoubleOperator):
     def apply(self, n1: float, n2: float) -> float:
         return n1 - n2
 
 
-class Multiply(Operator):
+class Multiply(DoubleOperator):
     def apply(self, n1: float, n2: float) -> float:
         return n1 * n2
 
@@ -44,6 +49,11 @@ class SquareRoot(SingleOperator):
         return math.sqrt(n1)
 
 
+class Max(Operator):
+    def apply(self, *args) -> float:
+        return max(*args)
+
+
 def parse_operator(s: str) -> Operator:
     if s == "/":
         return Divide()
@@ -55,6 +65,8 @@ def parse_operator(s: str) -> Operator:
         return Multiply()
     elif s == "SQRT":
         return SquareRoot()
+    elif s == "MAX":
+        return Max()
     else:
         raise ArithmeticError()
 
